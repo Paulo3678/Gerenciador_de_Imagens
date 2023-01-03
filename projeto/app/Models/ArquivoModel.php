@@ -11,7 +11,7 @@ class ArquivoModel
     const PATH_TO_SAVE_DESKTOP_FILES = "./assets/images/uploads/desk/";
     const TAMANHO_MAXIMO_PARA_ARQUIVOS = 1024 * 1024 * 5; // 10MB
 
-    private $nome, $extensao, $caminho, $dataDeEnvio, $tipo_arquivo, $tamanho_arquivo;
+    private $nome, $extensao, $caminho, $dataDeEnvio, $tipo_arquivo, $tamanho_arquivo, $nome_temporario, $nome_arquivo;
 
     public function getNome()
     {
@@ -68,9 +68,9 @@ class ArquivoModel
         if ($imagem_enviada_eh_valida) {
 
             $ordem_imagem = new OrdemImagensModel();
-            if ($ordem_imagem->jaPassouDoLimiteDeImagensCadastradas() == true) {
-                return false;
-            }
+            // if ($ordem_imagem->jaPassouDoLimiteDeImagensCadastradas() == true) {
+            //     return false;
+            // }
 
             $this->carregarDadosParaSalvarImagem();
 
@@ -91,6 +91,7 @@ class ArquivoModel
                     if (!$upload_do_arquivo) {
                         return false;
                     }
+                    
                     $insert = $this->salvarImagemNoBancoDeDados();
 
                     if (!$insert) {
@@ -98,11 +99,8 @@ class ArquivoModel
                     }
 
                     $add_ordem = $ordem_imagem->adicionarImagemNaOrdem($insert);
-
                     return true;
                 } catch (\Throwable $e) {
-                    echo $e->getMessage();
-                    exit;
                     return false;
                 }
             }
@@ -110,10 +108,14 @@ class ArquivoModel
         return false;
     }
 
+    
+
     private function salvarImagemNoBancoDeDados()
     {
         date_default_timezone_set('America/Sao_Paulo');
         $data_atual = date('Y-m-d H:i');
+
+
 
         try {
             $insert = DB::table("imagens")->insertGetId([

@@ -18,3 +18,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [Home::class, "index"]);
 Route::get('/admin/dashboard', [AreaCadastroImagem::class, "index"]);
 Route::post('/admin/dashboard/cadastrar-imagem', [AreaCadastroImagem::class, "cadastrarImagem"]);
+Route::post("/admin/dashboard/mudar-posicao", [AreaCadastroImagem::class, "atualizarPosicao"]);
+Route::post("/admin/dashboard/deletar-imagem", [AreaCadastroImagem::class, "deletarImagem"]);

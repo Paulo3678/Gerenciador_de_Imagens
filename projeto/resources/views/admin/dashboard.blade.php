@@ -87,10 +87,26 @@
                             <div>
                                 @foreach ($ordem_para_mostrar as $item)
                                     <div class="card">
+                                        <form action="/admin/dashboard/deletar-imagem" method="POST" class="form-deletar-imagem">
+                                            @csrf
+                                            <input type="hidden" name="id-imagem" value="{{ $item['Id_Imagem'] }}">
+                                            <button><i class="fa-solid fa-trash"></i></button>
+                                        </form>
+
                                         <h6>Posicao: {{ $item['Posicao'] }}</h6>
                                         <img src="{{ str_replace('./assets', '/assets', $item['Caminho']) }}"
                                             alt="">
-                                        <button>Mudar posicao</button>
+                                        <button class="btn-mudar-posicao">Mudar posicao</button>
+
+                                        <form action="/admin/dashboard/mudar-posicao" class="form-mudar-ordem" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="posicao-atual" value="{{ $item['Posicao'] }}">
+                                            <input type="number" min="1" max="10" name="nova-posicao"
+                                                placeholder="Nova Posição" />
+                                            <div class="area-botao">
+                                                <button>Mudar</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 @endforeach
                             </div>
@@ -113,7 +129,7 @@
 
     {{-- CUSTOM --}}
     <script src="/assets/js/show-upload-file.js"></script>
-    <script src="/assets/js/drag.js"></script>
+    <script src="/assets/js/mudar-posicao.js"></script>
 </body>
 
 </html>
