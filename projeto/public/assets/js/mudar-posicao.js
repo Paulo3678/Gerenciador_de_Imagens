@@ -7,7 +7,7 @@ botoes_mudar_opcao.forEach(botao => {
         const botao_clicado = e.target;
         const pai_do_botao = botao_clicado.parentNode;
 
-        const formulario = pai_do_botao.querySelector("form");
+        const formulario = pai_do_botao.querySelector("form.form-mudar-ordem");
         
         if(formulario.classList.contains("active")){
             formulario.classList.remove("active");

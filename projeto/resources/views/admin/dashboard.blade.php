@@ -87,18 +87,23 @@
                             <div>
                                 @foreach ($ordem_para_mostrar as $item)
                                     <div class="card">
-                                        <form action="/admin/dashboard/deletar-imagem" method="POST" class="form-deletar-imagem">
-                                            @csrf
-                                            <input type="hidden" name="id-imagem" value="{{ $item['Id_Imagem'] }}">
-                                            <button><i class="fa-solid fa-trash"></i></button>
-                                        </form>
 
-                                        <h6>Posicao: {{ $item['Posicao'] }}</h6>
+                                        <h6>
+                                            <span>Posicao: {{ $item['Posicao'] }}</span>
+                                            <form action="/admin/dashboard/deletar-imagem" method="POST"
+                                                class="form-deletar-imagem">
+                                                @csrf
+                                                <input type="hidden" name="id-imagem" value="{{ $item['Id_Imagem'] }}">
+                                                <button><i class="fa-solid fa-trash"></i></button>
+                                            </form>
+
+                                        </h6>
                                         <img src="{{ str_replace('./assets', '/assets', $item['Caminho']) }}"
                                             alt="">
                                         <button class="btn-mudar-posicao">Mudar posicao</button>
 
-                                        <form action="/admin/dashboard/mudar-posicao" class="form-mudar-ordem" method="POST">
+                                        <form action="/admin/dashboard/mudar-posicao" class="form-mudar-ordem"
+                                            method="POST">
                                             @csrf
                                             <input type="hidden" name="posicao-atual" value="{{ $item['Posicao'] }}">
                                             <input type="number" min="1" max="10" name="nova-posicao"

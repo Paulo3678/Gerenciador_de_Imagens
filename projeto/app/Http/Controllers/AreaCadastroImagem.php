@@ -7,6 +7,7 @@ use App\Models\ImagensModel;
 use Illuminate\Http\Request;
 use App\Models\OrdemImagensModel;
 use App\Http\Controllers\Controller;
+use App\Models\GerenciadorDeArquivosModel;
 use Illuminate\Support\Facades\Session;
 
 use function PHPUnit\Framework\returnSelf;
@@ -18,14 +19,21 @@ class AreaCadastroImagem extends Controller
         $imagens_manager = new ImagensModel();
         $ordem_para_mostrar = $imagens_manager->buscarImagensOrdenadas();
 
+        $tipos_permitidos = "";
+
+
         return view("/admin/dashboard", compact("ordem_para_mostrar"));
     }
 
     public function cadastrarImagem()
     {
         $arquivo = new ArquivoModel();
+        $arquivo->carregarNovoParaSalvarArquivo();
 
-        $salvamento = $arquivo->salvarNovaImagem();
+        $gerenciador_de_arquivos = new GerenciadorDeArquivosModel();
+
+        $salvamento = $gerenciador_de_arquivos->salvarArquivo($arquivo);
+
         if (!$salvamento) {
             Session::flash("aviso", [
                 "type" => "danger",
@@ -73,7 +81,7 @@ class AreaCadastroImagem extends Controller
     {
         $id_imagem = $request->post("id-imagem");
 
-        if(is_null($id_imagem)){
+        if (is_null($id_imagem)) {
             Session::flash("aviso", [
                 "type" => "danger",
                 "message" => "É preciso indicar o Id da imagem"
